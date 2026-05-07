@@ -1,121 +1,156 @@
-# Proyecto - Java con Pruebas para Autograding
+# Proyecto: Polimorfismo y Genéricos en Java
 
-1. Crea una clase abstracta Producto con métodos abstractos getNombre y getPrecio.
+Este proyecto evalúa herencia, clases abstractas, polimorfismo, genéricos y pruebas unitarias en Java.
 
-2. Implementa dos clases que extiendan esta clase abstracta: ProductoElectronico y ProductoAlimenticio.
+## 1. Objetivo
 
-3. Crea una clase Carrito que pueda contener productos de 4. cualquier tipo que extienda Producto.
+Construir un sistema básico de carrito de compras donde existan distintos tipos de producto y un carrito genérico capaz de almacenarlos, listarlos y calcular el total.
 
-5. En la clase Principal, crea instancias de Carrito y añade productos, luego muestra el total del carrito.
+## 2. Estructura del proyecto
 
-## Diagrama de clases
-[Editor en línea](https://mermaid.live/)
-```mermaid
----
-title: Clase
----
-classDiagram
-    class Producto {
-        <<abstract>>
-        -String nombre
-        -double precio
-        +Producto(String nombre, double precio)
-        +String getNombre()
-        +double getPrecio()
-    }
+- clases/Producto.java
+- clases/ProductoElectronico.java
+- clases/ProductoAlimenticio.java
+- clases/Carrito.java
+- miPrincipal/Principal.java
+- miTest/AppTest.java
 
-    class ProductoElectronico {
-        +ProductoElectronico(String nombre, double precio)
-    }
+## 3. Paso a paso de implementación
 
-    class ProductoAlimenticio {
-        +ProductoAlimenticio(String nombre, double precio)
-    }
+### Paso 1: Clase abstracta Producto
+En clases/Producto.java:
 
-    class Carrito {
-        -Producto[] productos
-        -int indice
-        +Carrito(int capacidad)
-        +void agregarProducto(T producto)
-        +double calcularTotal()
-        +void mostrarProductos()
-    }
+1. Declarar la clase como abstracta.
+2. Crear atributos protegidos:
+1. nombre (String)
+2. precio (double)
+3. Crear constructor con nombre y precio.
+4. Declarar métodos abstractos:
+1. getNombre()
+2. getPrecio()
 
-    class Principal {
-        +main(String[] args)
-    }
+### Paso 2: ProductoElectronico
+En clases/ProductoElectronico.java:
 
-    Producto <|-- ProductoElectronico
-    Producto <|-- ProductoAlimenticio
-    Carrito --> Producto
-    Principal --> Carrito
-    Principal --> ProductoElectronico
-    Principal --> ProductoAlimenticio
-```
-[Referencia-Mermaid](https://mermaid.js.org/syntax/classDiagram.html)
+1. Extender la clase Producto.
+2. Crear constructor que llame a super(nombre, precio).
+3. Implementar getNombre() y getPrecio().
 
-## Diagrama de clases UML con draw.io
-El repositorio está configurado para crear Diagramas de clases UML con ```draw.io```. Para usarlo simplemente agrega un archivo con extensión ```.drawio.png```, das doble clic sobre el mismo y se activará el editor ```draw.io``` incrustado en ```VSCode``` para edición. Asegúrate de agregar las formas UML en el menú de formas del lado izquierdo (opción ```+Más formas```).
+### Paso 3: ProductoAlimenticio
+En clases/ProductoAlimenticio.java:
 
-## Uso del proyecto con make
+1. Extender la clase Producto.
+2. Crear constructor que llame a super(nombre, precio).
+3. Implementar getNombre() y getPrecio().
 
-### Default - Compilar+Probar+Ejecutar
-```
+### Paso 4: Carrito genérico
+En clases/Carrito.java:
+
+1. Declarar la clase como Carrito<T extends Producto>.
+2. Crear arreglo interno de tipo T[] y un índice.
+3. Constructor con capacidad para inicializar el arreglo.
+4. Método agregarProducto(T producto):
+1. Agrega el producto si hay espacio.
+2. Si no hay espacio, muestra mensaje de carrito lleno.
+5. Método calcularTotal():
+1. Recorre los productos agregados.
+2. Suma los precios.
+3. Retorna el total.
+6. Método mostrarProductos():
+1. Recorre los productos agregados.
+2. Muestra nombre y precio de cada producto.
+
+### Paso 5: Programa principal
+En miPrincipal/Principal.java:
+
+1. Crear Carrito<Producto> con capacidad (ejemplo: 10).
+2. Crear al menos un ProductoElectronico y un ProductoAlimenticio.
+3. Agregar los productos al carrito.
+4. Mostrar productos.
+5. Mostrar total.
+
+### Paso 6: Validación con pruebas
+En miTest/AppTest.java:
+
+1. Verificar que ProductoElectronico devuelve nombre y precio correctos.
+2. Verificar que ProductoAlimenticio devuelve nombre y precio correctos.
+3. Verificar que el carrito calcula correctamente el total.
+
+## 4. Checklist de entrega
+
+- Producto abstracto implementado.
+- ProductoElectronico implementado.
+- ProductoAlimenticio implementado.
+- Carrito genérico implementado.
+- calcularTotal() implementado.
+- mostrarProductos() implementado.
+- Flujo principal funcionando.
+- Pruebas locales pasando.
+
+## 5. Comandos con make
+
+Compilar, probar y ejecutar:
+```bash
 make
 ```
-### Compilar
-```
+
+Solo compilar:
+```bash
 make compile
 ```
-### Probar todo
-```
+
+Solo pruebas:
+```bash
 make test
 ```
-### Ejecutar App
-```
+
+Solo ejecutar app:
+```bash
 make run
 ```
-### Limpiar binarios
-```
+
+Limpiar binarios:
+```bash
 make clean
 ```
-## Comandos Git-Cambios y envío a Autograding
 
-### Por cada cambio importante que haga, actualice su historia usando los comandos:
+## 6. Comandos manuales (Linux)
+
+Compilar:
+```bash
+find ./ -type f -name "*.java" > compfiles.txt
+javac -encoding utf-8 -d build -cp lib/junit-platform-console-standalone-1.5.2.jar @compfiles.txt
 ```
+
+Ejecutar todas las pruebas:
+```bash
+java -jar lib/junit-platform-console-standalone-1.5.2.jar --class-path build --scan-class-path
+```
+
+Ejecutar una clase de pruebas:
+```bash
+java -jar lib/junit-platform-console-standalone-1.5.2.jar --class-path build --select-class miTest.AppTest
+```
+
+Ejecutar una prueba específica:
+```bash
+java -jar lib/junit-platform-console-standalone-1.5.2.jar --class-path build --select-method miTest.AppTest#testCarrito
+```
+
+Ejecutar aplicación:
+```bash
+java -cp build miPrincipal.Principal
+```
+
+## 7. Entrega a autograding
+
+Guardar avances:
+```bash
 git add .
 git commit -m "Descripción del cambio"
 ```
-### Envíe sus actualizaciones a GitHub para Autograding con el comando:
-```
+
+Subir a GitHub:
+```bash
 git push origin main
 ```
-## Comandos individuales
-### Compilar
-
-```
-find ./ -type f -name "*.java" > compfiles.txt
-javac -d build -cp lib/junit-platform-console-standalone-1.5.2.jar @compfiles.txt
-```
-Ejecutar ambos comandos en 1 sólo paso:
-
-```
-find ./ -type f -name "*.java" > compfiles.txt ; javac -d build -cp lib/junit-platform-console-standalone-1.5.2.jar @compfiles.txt
-```
-
-
-### Ejecutar Todas la pruebas locales de 1 Test Case
-
-```
-java -jar lib/junit-platform-console-standalone-1.5.2.jar -class-path build --select-class miTest.AppTest
-```
-### Ejecutar 1 prueba local de 1 Test Case
-
-```
-java -jar lib/junit-platform-console-standalone-1.5.2.jar -class-path build --select-method miTest.AppTest#appHasAGreeting
-```
-### Ejecutar App
-```
-java -cp build miPrincipal.Principal
-```
-Los comandos anteriores están considerados para un ambiente Linux. [Referencia.](https://www.baeldung.com/junit-run-from-command-line)
