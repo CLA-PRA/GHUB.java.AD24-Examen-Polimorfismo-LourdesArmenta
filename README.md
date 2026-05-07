@@ -15,6 +15,61 @@ Construir un sistema básico de carrito de compras donde existan distintos tipos
 - miPrincipal/Principal.java
 - miTest/AppTest.java
 
+## Diagrama de clases (UML)
+
+```mermaid
+classDiagram
+		class Producto {
+			<<abstract>>
+			#String nombre
+			#double precio
+			+Producto(String nombre, double precio)
+			+getNombre() String
+			+getPrecio() double
+		}
+
+		class ProductoElectronico {
+			+ProductoElectronico(String nombre, double precio)
+			+getNombre() String
+			+getPrecio() double
+		}
+
+		class ProductoAlimenticio {
+			+ProductoAlimenticio(String nombre, double precio)
+			+getNombre() String
+			+getPrecio() double
+		}
+
+		class Carrito~T extends Producto~ {
+			-T[] productos
+			-int indice
+			+Carrito(int capacidad)
+			+agregarProducto(T producto) void
+			+calcularTotal() double
+			+mostrarProductos() void
+		}
+
+		class Principal {
+			+main(String[] args) void
+		}
+
+		class AppTest {
+			+testProductoElectronico() void
+			+testProductoAlimenticio() void
+			+testCarrito() void
+		}
+
+		Producto <|-- ProductoElectronico
+		Producto <|-- ProductoAlimenticio
+		Carrito ..> Producto : T extends
+		Principal ..> Carrito : crea y usa
+		Principal ..> ProductoElectronico : instancia
+		Principal ..> ProductoAlimenticio : instancia
+		AppTest ..> ProductoElectronico : prueba
+		AppTest ..> ProductoAlimenticio : prueba
+		AppTest ..> Carrito : prueba
+```
+
 ## 3. Paso a paso de implementación
 
 ### Paso 1: Clase abstracta Producto
